@@ -45,8 +45,8 @@ public class App
 		redirect.get("/", "/profesor");
 
 		get("/profesor", (req, res) -> {
-			int random = (int) (Math.random()*10000000 +1);
-			String result = "<form action='/"+random+  "' method='post'>"
+			
+			String result = "<form action='/profesor' method='post'>"
 			+ "<fieldset>"
 			+ "<p>INTRODUZCA LOS DATOS:</p>\n"
 			+ "<p>Asignatura</p>"
@@ -82,18 +82,19 @@ public class App
 		);
 		
 		
-		post("/:random", (req, res) -> { // Revisar si es get o post
-			System.out.println(req.queryParams("asignatura"));
-			String path = req.uri();
-			String aux = path.substring(1,path.length());
+		post("/profesor", (req, res) -> { // Revisar si es get o post
+			int id_examen = (int) (Math.random()*10000000 +1);
+			
+			
 			//Añadido
-			int id_examen = Math.abs(rnd.nextInt());
+			
 			String asignatura = req.queryParams("asignatura");
 			//-Añadido
-			String result ="<h1> El examen con ID "+id_examen+" se ha iniciado con el numero generado: "+ aux + "</h1>"
+			String result ="<h1> Examen de la asignatura "+ asignatura + " creado con éxito</h1>"
 			+ "<form action='/' method='get'>"		
 		    + "<input type=\"submit\" value=\"Finalizar examen\">"	    
-		    + "</form>";
+		    + "</form><br>"
+		    +"<h2>Se ha generado el examen en la url "+id_examen+"</h2>";
 			
 		
 			//Añadido
