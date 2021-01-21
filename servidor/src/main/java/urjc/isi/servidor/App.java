@@ -50,7 +50,7 @@ public class App
 			+ "<fieldset>"
 			+ "<p>INTRODUZCA LOS DATOS:</p>\n"
 			+ "<p>Asignatura</p>"
-			+ "<input type='text' name='asignatura' required='true'>\n"
+			+ "<input type='text' name='asignatura' required='true'><br>"
 			+ "<input type=\"submit\" value=\"Comenzar examen\">"	  
 		    + "</fieldset>" 
 		    + "</form>";
@@ -111,6 +111,7 @@ public class App
 		});
 		
 		get("/:random", (req, res) -> {
+			//COMPROBAR SI EL RECURSO :RANDOM SE ENCUENTRA EN LA BD, SI NO ES ASI, DEVOLVER 404 NOT FOUND
 			
 			String result = "<h1>Examen con id "+req.params(":random")+" finalizado!</h1>"
 					+"<h2>Espera unos minutos hasta que se genere el informe de copias.</h2>";
