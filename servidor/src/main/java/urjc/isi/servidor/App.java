@@ -91,7 +91,7 @@ public class App
 			String asignatura = req.queryParams("asignatura");
 			//-Añadido
 			String result ="<h1> Examen de la asignatura "+ asignatura + " creado con éxito</h1>"
-			+ "<form action='/' method='get'>"		
+			+ "<form action='/"+id_examen+"' method='get'>"		
 		    + "<input type=\"submit\" value=\"Finalizar examen\">"	    
 		    + "</form><br>"
 		    +"<h2>Se ha generado el examen en la url "+id_examen+"</h2>";
@@ -109,7 +109,14 @@ public class App
 			
 			return result;
 		});
-	
+		
+		get("/:random", (req, res) -> {
+			
+			String result = "<h1>Examen con id "+req.params(":random")+" finalizado!</h1>"
+					+"<h2>Espera unos minutos hasta que se genere el informe de copias.</h2>";
+			
+			return result;
+		});
 
 	    }
 		
