@@ -49,8 +49,9 @@ public class App
 			String result = "<form action='/profesor' method='post'>"
 			+ "<fieldset>"
 			+ "<p>INTRODUZCA LOS DATOS:</p>\n"
-			+ "<p>Asignatura  "
-			+ "<input type='text' name='asignatura' required='true'><br>"
+			
+			+ "<p>Asignatura:  "
+			+ "<input type='text' name='asignatura' required='true'><br><br>"
 			+ "<input type=\"submit\" value=\"Comenzar examen\">"	  
 		    + "</fieldset>" 
 		    + "</form></p>";
