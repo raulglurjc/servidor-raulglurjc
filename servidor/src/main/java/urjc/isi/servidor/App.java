@@ -45,7 +45,7 @@ public class App
 		redirect.get("/", "/profesor");
 
 		get("/profesor", (req, res) -> {
-			int random = rnd.nextInt()*(-1);
+			int random = (int) (Math.random()*10000000 +1);
 			String result = "<form action='/"+random+  "' method='post'>"
 			+ "<fieldset>"
 			+ "<p>INTRODUZCA LOS DATOS:</p>\n"
