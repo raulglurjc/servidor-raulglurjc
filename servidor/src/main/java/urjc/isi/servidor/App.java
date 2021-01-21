@@ -90,7 +90,7 @@ public class App
 			
 			String asignatura = req.queryParams("asignatura");
 			//-Añadido
-			String result ="<h1> Examen de la asignatura <strong style='color:red'>"+ asignatura + "</strong> creado con éxito</h1>"
+			String result ="<h1> Examen de la asignatura <strong style='color:red'>"+ asignatura + "</strong> creado con <u>éxito</u></h1>"
 			+ "<form action='/"+id_examen+"' method='get'>"		
 		    + "<input type=\"submit\" value=\"Finalizar examen\">"	    
 		    + "</form><br>"
