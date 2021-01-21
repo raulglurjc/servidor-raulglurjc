@@ -83,14 +83,14 @@ public class App
 		
 		
 		post("/profesor", (req, res) -> { // Revisar si es get o post
-			int id_examen = (int) (Math.random()*10000000 +1);
+			int id_examen = (int) (Math.random()*1000000000 +1);
 			
 			
 			//Añadido
 			
 			String asignatura = req.queryParams("asignatura");
 			//-Añadido
-			String result ="<h1> Examen de la asignatura "+ asignatura + " creado con éxito</h1>"
+			String result ="<h1> Examen de la asignatura <strong style='color:red'>"+ asignatura + "</strong> creado con éxito</h1>"
 			+ "<form action='/"+id_examen+"' method='get'>"		
 		    + "<input type=\"submit\" value=\"Finalizar examen\">"	    
 		    + "</form><br>"
