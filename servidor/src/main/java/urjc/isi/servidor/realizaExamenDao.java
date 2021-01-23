@@ -17,11 +17,11 @@ public class realizaExamenDao {
             if(c!=null) return;
 
             
-            String username = "gqkxkyggyzmmha";
-           	String password = "54e3ade8c73288a6d45779a50939f152b65c0e157544020bbeb8c02546a48a33";
-	        String host = "ec2-34-204-121-199.compute-1.amazonaws.com";
+            String username = "spjojkqxqnxhsq";
+           	String password = "acac73bcdebbf70bbf7a79b7980e37bd77348cd7af07b8226e44da0550ad859e";
+	        String host = "ec2-52-44-46-66.compute-1.amazonaws.com";
 	        String port = "5432";
-	        String database = "d52a33j8ekgvrj";
+	        String database = "d1joks3d7141gd";
 	        String dbUrl = "jdbc:postgresql://" + host + ":" + port + "/" + database;
             
         	c = DriverManager.getConnection(dbUrl,username,password);
