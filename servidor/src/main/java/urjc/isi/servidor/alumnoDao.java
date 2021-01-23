@@ -25,7 +25,7 @@ public class alumnoDao {
             
             
         	c = DriverManager.getConnection(dbUrl,username,password);
-            c.setAutoCommit(true);
+            c.setAutoCommit(false);
 
             c.prepareStatement("drop table if exists Alumnos CASCADE").execute();
             c.prepareStatement("CREATE TABLE Alumnos (idAlumno	VARCHAR(50) NOT NULL UNIQUE,Nombre	VARCHAR(50) NOT NULL,Puerto	INTEGER,IP	VARCHAR(50),PRIMARY KEY(idAlumno))").execute();

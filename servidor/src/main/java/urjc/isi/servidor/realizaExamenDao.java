@@ -25,7 +25,7 @@ public class realizaExamenDao {
 	        String dbUrl = "jdbc:postgresql://" + host + ":" + port + "/" + database+"?sslmode=require&ssl=true&sslfactory=org.postgresql.ssl.NonValidatingFactory";
              
         	c = DriverManager.getConnection(dbUrl,username,password);
-            c.setAutoCommit(true);
+            c.setAutoCommit(false);
 
             c.prepareStatement("drop table if exists RealizaExamen CASCADE").execute();
 		    c.prepareStatement("CREATE TABLE RealizaExamen (idExamen INTEGER NOT NULL,idAlumno varchar(50) NOT NULL,Path varchar(50),FOREIGN KEY(idExamen) REFERENCES Examenes(IdExamen),FOREIGN KEY(idAlumno) REFERENCES Alumnos(idAlumno),PRIMARY KEY(idExamen,idAlumno))").execute();
