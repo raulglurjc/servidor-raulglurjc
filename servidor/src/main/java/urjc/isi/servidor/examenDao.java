@@ -89,7 +89,6 @@ public class examenDao {
             ps.setString(3, examen.getAsignatura());
             ps.execute();
 
-            c.commit();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
