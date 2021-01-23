@@ -25,7 +25,7 @@ public class examenDao {
             
             
         	c = DriverManager.getConnection(dbUrl,username,password);
-            c.setAutoCommit(false);
+            c.setAutoCommit(true);
             
             c.prepareStatement("drop table if exists Examenes CASCADE").execute();
             c.prepareStatement("CREATE TABLE Examenes (IdExamen	INTEGER NOT NULL UNIQUE,Fecha	DATE NOT NULL,Asignatura VARCHAR(50) NOT NULL,PRIMARY KEY(IdExamen))").execute();
