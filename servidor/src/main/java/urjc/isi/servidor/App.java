@@ -59,15 +59,6 @@ public class App
 
 		post("/alumno", (req, res) -> {
 			
-			String dni = req.queryParams("dni");
-			String nombre = req.queryParams("nombre");
-			int id_ex = Integer.parseInt(req.queryParams("idex"));
-			String ip = req.ip();
-
-			alumno alumnoObject = new alumno(dni,nombre, 4568, ip);
-			alumnoDao.save(alumnoObject);
-			realizaExamen realizaExamenObject = new realizaExamen(id_ex,dni, null);
-			realizaExamenDao.save(realizaExamenObject);
 			return ip;
 		});
 
