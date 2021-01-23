@@ -76,7 +76,7 @@ public class App
 		realizaExamenDao.save(realizaExamenObject);
 		return result;
 	});
-	post("/ip", (req, res) -> {
+	get("/ip", (req, res) -> {
 		
 		String ip = req.ip();
 
