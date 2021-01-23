@@ -21,7 +21,7 @@ public class examenDao {
 	        String host = "ec2-18-205-122-145.compute-1.amazonaws.com";
 	        String port = "5432";
 	        String database = "de6t3nl1iobt9c";
-	        String dbUrl = "jdbc:postgresql://" + host + ":" + port + "/" + database+"?sslmode=require&ssl=true";
+	        String dbUrl = "jdbc:postgresql://" + host + ":" + port + "/" + database+"?sslmode=require&ssl=true&sslfactory=org.postgresql.ssl.NonValidatingFactory";
             
             
         	c = DriverManager.getConnection(dbUrl,username,password);
