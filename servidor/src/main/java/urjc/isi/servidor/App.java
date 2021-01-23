@@ -38,123 +38,117 @@ public class App
 		alumnoDao alumnoDao = new alumnoDao();
 		realizaExamenDao realizaExamenDao = new realizaExamenDao();
 		
-	//	int examen=0;//Si es 0 el examen esta finalizado, 1 está activo.
-
-		Random rnd = new Random();
+	
 		
 		redirect.get("/", "/profesor");
 
 		get("/profesor", (req, res) -> {
-			
+
 			String result = "<form action='/profesor' method='post'>"
 			+ "<fieldset>"
 			+ "<p>INTRODUZCA LOS DATOS:</p>\n"
-			
+
 			+ "<p>Asignatura:  "
 			+ "<input type='text' name='asignatura' required='true'><br><br>"
-			+ "<input type=\"submit\" value=\"Comenzar examen\">"	  
-		    + "</fieldset>" 
-		    + "</form></p>";
-			
+			+ "<input type=\"submit\" value=\"Comenzar examen\">"
+				+ "</fieldset>"
+				+ "</form></p>";
+
 			return result;
 		});
-		
+
 		post("/alumno", (req, res) -> {
-			String result = req.queryParams("nombre")+ " " +
-			req.queryParams("dni")+ " " +
-			req.queryParams("idex");
-			System.out.println(result);
-			cosa = result;
+			
 			String dni = req.queryParams("dni");
 			String nombre = req.queryParams("nombre");
 			int id_ex = Integer.parseInt(req.queryParams("idex"));
 			String ip = req.ip();
-			
+
 			alumno alumnoObject = new alumno(dni,nombre, 4568, ip);
 			alumnoDao.save(alumnoObject);
 			realizaExamen realizaExamenObject = new realizaExamen(id_ex,dni, null);
 			realizaExamenDao.save(realizaExamenObject);
-			return result;
+			return ip;
 		});
-		
-		
-		get("/cosa", (req, res) -> 
+
+
+		get("/cosa", (req, res) ->
 			"<h1> El examen con ID "+ cosa + "</h1>"
 		);
-		
-		
+
+
 		post("/profesor", (req, res) -> { // Revisar si es get o post
 			int id_examen = (int) (Math.random()*1000000000 +1);
-			
-			
+
+
 			//Añadido
-			
+
 			String asignatura = req.queryParams("asignatura");
 			//-Añadido
 			String result ="<h1> Examen de la asignatura <strong style='color:red'>"+ asignatura + "</strong> creado con <u>éxito</u></h1>"
-			+ "<form action='/"+id_examen+"' method='get'>"		
-		    + "<input type=\"submit\" value=\"Finalizar examen\">"	    
-		    + "</form><br>"
-		    +"<h2>Se ha generado el examen en la url "+id_examen+"</h2>";
-			
-		
+			+ "<form action='/"+id_examen+"' method='get'>"
+				+ "<input type=\"submit\" value=\"Finalizar examen\">"
+				+ "</form><br>"
+				+"<h2>Se ha generado el examen en la url "+id_examen+"</h2>";
+
+
 			//Añadido
 			Date fecha = new Date();
 			long lnMilisegundos = fecha.getTime();
 			java.sql.Date sqlDate = new java.sql.Date(lnMilisegundos);
-				
+
 			examen examenObject = new examen(id_examen, sqlDate, asignatura);
 			examenDao.save(examenObject);
 			//-Añadido
-				
-			
-			return result;
-		});
-		
-		get("/:random", (req, res) -> {
-			//COMPROBAR SI EL RECURSO :RANDOM SE ENCUENTRA EN LA BD, SI NO ES ASI, DEVOLVER 404 NOT FOUND
-			
-			String result = "<h1>Examen con id "+req.params(":random")+" finalizado!</h1>"
-					+"<h2>Espera unos minutos hasta que se genere el informe de copias.</h2>";
-			
+
+
 			return result;
 		});
 
-	    }
-		
-//		get("/alumnos", (req, res) -> 
-//			String result = "<form action='/examinar' method='post'>"
-//			+ "<fieldset>"
-//			+ "<p>INTRODUZCA LOS DATOS:</p>\n"
-//			+ "<p>Nombre: <input type='text' name='nombre_alumno' required='true'></p>\n"
-//			+ "<p>Apellidos: <input type='text' name='apellido_alumno' required='true'></p>\n"
-//			+ "<p>ID de examen: <input type='text' name='id_examen_alumno' required='true'></p>\n"
-//			+ "<input type=\"submit\" value=\"Comenzar examen\"></fieldset></form>";
-//			
-//			return result;
-//		);
-//		
-//		
-//		
-//		post("/examinar", (req, res) -> {
-//			//Añadido
-//			String nombre = req.queryParams("nombre_alumno");
-//			String apellido = req.queryParams("apellido_alumno");
-//			String id_alumno = req.queryParams("id_examen_alumno");
-//			//-Añadido
-//			String result = nombre + " " + apellido  + " has iniciado el examen con ID: " +"<strong>"+ id_alumno +"</strong>";
-//			String nombre_alumno = nombre + " " + apellido;
-//			
-//			//Añadido
-//			String IP = "1";
-//			String puerto = "22";
-//			base_datos.insert_alumno(connection, nombre_alumno, IP, puerto);
-//			//-Añadido
-//			
-//			//EJECUTAR CODIGO DE COMMITS
-//			
-//			return result;
-//		    });
+		get("/:random", (req, res) -> {
+			//COMPROBAR SI EL RECURSO :RANDOM SE ENCUENTRA EN LA BD, SI ES ASI, DEVOLVER ERROR
+			//BUCLE QUE RECORRA TODOS LOS ALUMNOS DEL ID
+			String result = "<h1>Examen con id "+req.params(":random")+" finalizado!</h1>"
+					+"<h2>Espera unos minutos hasta que se genere el informe de copias.</h2>";
+
+			return result;
+		});
+
+			}
+
+//			get("/alumnos", (req, res) ->
+//				String result = "<form action='/examinar' method='post'>"
+//				+ "<fieldset>"
+//				+ "<p>INTRODUZCA LOS DATOS:</p>\n"
+//				+ "<p>Nombre: <input type='text' name='nombre_alumno' required='true'></p>\n"
+//				+ "<p>Apellidos: <input type='text' name='apellido_alumno' required='true'></p>\n"
+//				+ "<p>ID de examen: <input type='text' name='id_examen_alumno' required='true'></p>\n"
+//				+ "<input type=\"submit\" value=\"Comenzar examen\"></fieldset></form>";
+	//
+//				return result;
+//			);
+	//
+	//
+	//
+//			post("/examinar", (req, res) -> {
+//				//Añadido
+//				String nombre = req.queryParams("nombre_alumno");
+//				String apellido = req.queryParams("apellido_alumno");
+//				String id_alumno = req.queryParams("id_examen_alumno");
+//				//-Añadido
+//				String result = nombre + " " + apellido  + " has iniciado el examen con ID: " +"<strong>"+ id_alumno +"</strong>";
+//				String nombre_alumno = nombre + " " + apellido;
+	//
+//				//Añadido
+//				String IP = "1";
+//				String puerto = "22";
+//				base_datos.insert_alumno(connection, nombre_alumno, IP, puerto);
+//				//-Añadido
+	//
+//				//EJECUTAR CODIGO DE COMMITS
+	//
+//				return result;
+//			    });
 	
 	
 	
