@@ -21,8 +21,8 @@ public class examenDao {
 	        String host = "ec2-18-205-122-145.compute-1.amazonaws.com";
 	        String port = "5432";
 	        String database = "de6t3nl1iobt9c";
-	        String dbUrl = "postgres://mzraocfhnhizll:40fc4a839cd309023ac4cb6c536df7c5c7dfb774391f76243b51c1883b6c0a1d@ec2-18-205-122-145.compute-1.amazonaws.com:5432/de6t3nl1iobt9c";
-	        
+	        String dbUrl = "jdbc:postgres://mzraocfhnhizll:40fc4a839cd309023ac4cb6c536df7c5c7dfb774391f76243b51c1883b6c0a1d@ec2-18-205-122-145.compute-1.amazonaws.com:5432/de6t3nl1iobt9c";
+	         
             
         	c = DriverManager.getConnection(dbUrl,username,password);
             c.setAutoCommit(false);
