@@ -59,6 +59,10 @@ public class App
 
 		post("/alumno", (req, res) -> {
 			
+			
+			String ip = req.ip();
+
+			
 			return ip;
 		});
 
