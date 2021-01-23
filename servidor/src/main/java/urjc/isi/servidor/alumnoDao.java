@@ -21,8 +21,8 @@ public class alumnoDao {
 	        String host = "ec2-18-205-122-145.compute-1.amazonaws.com";
 	        String port = "5432";
 	        String database = "de6t3nl1iobt9c";
-	        String dbUrl = "jdbc:postgresql://" + host + ":" + port + "/" + database+"?sslmode=require&user="+username+"&password="+password;
-             
+	        String dbUrl = "jdbc:postgresql://" + host + ":" + port + "/" + database+"?sslmode=require&ssl=true";
+            
             
         	c = DriverManager.getConnection(dbUrl,username,password);
             c.setAutoCommit(true);
