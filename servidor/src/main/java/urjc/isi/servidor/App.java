@@ -79,9 +79,9 @@ public class App
 	get("/ip", (req, res) -> {
 		
 		String ip = req.ip();
-
+		String port = String.valueOf(req.port());
 		
-		return ip;
+		return ip+port;
 	});
 
 
