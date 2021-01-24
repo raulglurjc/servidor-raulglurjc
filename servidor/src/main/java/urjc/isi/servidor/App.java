@@ -111,7 +111,13 @@ public class App
 
 		return result;
 	});
+	get("/prueba", (req, res) -> {
+		//COMPROBAR SI EL RECURSO :RANDOM SE ENCUENTRA EN LA BD, SI NO ES ASI, DEVOLVER 404 NOT FOUND
+		
+		requestToClient.sendGet();
 
+		return "EXITO";
+	});
 	get("/:random", (req, res) -> {
 		//COMPROBAR SI EL RECURSO :RANDOM SE ENCUENTRA EN LA BD, SI NO ES ASI, DEVOLVER 404 NOT FOUND
 		
@@ -120,13 +126,7 @@ public class App
 
 		return result;
 	});
-	get("/prueba", (req, res) -> {
-		//COMPROBAR SI EL RECURSO :RANDOM SE ENCUENTRA EN LA BD, SI NO ES ASI, DEVOLVER 404 NOT FOUND
-		
-		requestToClient.sendGet();
-
-		return "EXITO";
-	});
+	
 
 		}
 
