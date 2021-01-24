@@ -29,7 +29,7 @@ public class httprequest {
 
     public void sendGet() throws Exception {
 
-        HttpGet request = new HttpGet("servidor-raulglurjc.herokuapp.com/profesor");
+        HttpGet request = new HttpGet("http://servidor-raulglurjc.herokuapp.com/profesor");
 
         // add request headers
        // request.addHeader("custom-key", "mkyong");
