@@ -81,7 +81,7 @@ public class App
 		String ip = req.ip();
 		String port = String.valueOf(req.port());
 		
-		return "IP:"+ip+"PUERTO:"+port;
+		return "IP: "+ip+" PUERTO: "+port;
 	});
 
 
