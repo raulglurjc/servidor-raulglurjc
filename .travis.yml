@@ -1,0 +1,9 @@
+language: java
+deploy:
+  on:
+    branch: master
+  skip_cleanup: true
+  provider: heroku
+  app: servidor-raulglurjc
+  api_key:
+    secure: iTDlOpo9bxhwrfL6ekB5vWbQquXDYvyMYjKw3rw257OPWUR7ZtQC8wCREFS0aB30S/AUAHqVpdEw2rRLZvsgp7mMvofV/7iHG90lEvvsg9+kuYNKfKIXJ2k+3kcEP8U0tsbbor/I5Yt5ok1+DEPkAGsLW/0RHUZqIrlQ4m+CoXhKM4IOg7jkcV2M+lRuucPt0HMRwntD1mVLvTaIFMYqAcWy7ODaVs6B5wJjTulqXy5r8KZoVNUlQdZ41c9JQbNLpniXnutxTgiIBNMHRrq6/q8M9vbVZTKjHfJ6nKoCiL39ZblOsKKNZtY/90pQHCTc30zKoQOKrmLhG/3l+WSL0e0tjPqBLdGbIcTUFJHDgF1yy7nPurlrm/mZxXjjFLkDBK31P+crOCh9KbIxFdBr2nWx7q88vprIOYFIaeCq7pZkQZluWBPUT+BCdGghGL9zemsm3N4bRnr0KWD+RYUj4B7EK7JwjuOH6jLFUgiNTftOLUv/aGrVMTT49Fe9gaIK4OpP0nPJ0yGT5I8QhgfncFuDqLUagRX9wCpqHX7uutGg7uwDQjgV5eOhfwfXqNWi85L6y6/kFh7tCdsQ49sBlKCa3KAyqZgEVb0hw/b+W0xBRuuUft67rLHc3bUBR4kBr/JwxG5fa7kEy32gqUWNzccd+gs1JbsceIq1qpdQN2I=
