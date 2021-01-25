@@ -1,7 +1,7 @@
 language: java
 deploy:
   on:
-    branch: masteratom .tra
+    branch: master
   skip_cleanup: true
   provider: heroku
   app: servidor-raulglurjc
