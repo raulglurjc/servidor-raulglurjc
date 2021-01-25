@@ -111,15 +111,15 @@ public class App
 
 		return result;
 	});
-	get("/prueba", (req, res) -> {
-		//COMPROBAR SI EL RECURSO :RANDOM SE ENCUENTRA EN LA BD, SI NO ES ASI, DEVOLVER 404 NOT FOUND
-		
-		requestToClient.sendGet();
+	get("/prueba", (req, res) -> {		
+		requestToClient.sendGetprueba();
 
-		return "EXITO";
+		return "EXITOS";
 	});
 	get("/:random", (req, res) -> {
 		//COMPROBAR SI EL RECURSO :RANDOM SE ENCUENTRA EN LA BD, SI NO ES ASI, DEVOLVER 404 NOT FOUND
+		//BUCLE QUE RECORRA LOS ALUMNOS DEL ID DE EXAMEN HACIENDO GET A CADA UNO
+		// requestToClient.sendGetAlumno(ip, puerto);
 		
 		String result = "<h1>Examen con id "+req.params(":random")+" finalizado!</h1>"
 				+"<h2>Espera unos minutos hasta que se genere el informe de copias.</h2>";

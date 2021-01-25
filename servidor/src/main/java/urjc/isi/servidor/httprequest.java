@@ -27,9 +27,36 @@ public class httprequest {
         httpClient.close();
     }
 
-    public void sendGet() throws Exception {
+    public void sendGetprueba() throws Exception {
 
-        HttpGet request = new HttpGet("http://servidor-raulglurjc.herokuapp.com/profesor");
+        HttpGet request = new HttpGet("http://servidor-hectorfr95.herokuapp.com/profesor");
+
+        // add request headers
+       // request.addHeader("custom-key", "mkyong");
+      //  request.addHeader(HttpHeaders.USER_AGENT, "Googlebot");
+
+        try (CloseableHttpResponse response = httpClient.execute(request)) {
+
+            // Get HttpResponse Status
+            System.out.println(response.getStatusLine().toString());
+
+            HttpEntity entity = response.getEntity();
+            Header headers = entity.getContentType();
+            System.out.println(headers);
+
+            if (entity != null) {
+                // return it as a String
+                String result = EntityUtils.toString(entity);
+                System.out.println(result);
+            }
+
+        }
+
+    }
+    
+    public void sendGetAlumno(String ip, int puerto) throws Exception {
+    	String url = "http://" + ip +":"+puerto+"/fin";
+        HttpGet request = new HttpGet(url);
 
         // add request headers
        // request.addHeader("custom-key", "mkyong");
