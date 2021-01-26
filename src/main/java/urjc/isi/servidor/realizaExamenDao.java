@@ -16,20 +16,12 @@ public class realizaExamenDao {
         try {
             if(c!=null) return;
 
-            
-            String username = "mzraocfhnhizll";
-           	String password = "40fc4a839cd309023ac4cb6c536df7c5c7dfb774391f76243b51c1883b6c0a1d";
-	        String host = "ec2-18-205-122-145.compute-1.amazonaws.com";
-	        String port = "5432";
-	        String database = "de6t3nl1iobt9c";
-	        String dbUrl = "jdbc:postgresql://" + host + ":" + port + "/" + database+"?sslmode=require&ssl=true&sslfactory=org.postgresql.ssl.NonValidatingFactory";
-             
-        	c = DriverManager.getConnection(dbUrl,username,password);
+            c = DriverManager.getConnection("jdbc:sqlite:proyecto.db");
             c.setAutoCommit(false);
 
-            c.prepareStatement("drop table if exists RealizaExamen CASCADE").execute();
-		    c.prepareStatement("CREATE TABLE RealizaExamen (idExamen INTEGER NOT NULL,idAlumno varchar(50) NOT NULL,Path varchar(50),FOREIGN KEY(idExamen) REFERENCES Examenes(IdExamen),FOREIGN KEY(idAlumno) REFERENCES Alumnos(idAlumno),PRIMARY KEY(idExamen,idAlumno))").execute();
-            c.commit();
+            c.prepareStatement("drop table if exists RealizaExamen").execute();
+		 c.prepareStatement("CREATE TABLE RealizaExamen (idExamen INTEGER NOT NULL,idAlumno varchar(50) NOT NULL,Path varchar(50),FOREIGN KEY(idExamen) REFERENCES Examenes(IdExamen),FOREIGN KEY(idAlumno) REFERENCES Alumnos(idAlumno),PRIMARY KEY(idExamen,idAlumno))").execute();
+            	c.commit();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
