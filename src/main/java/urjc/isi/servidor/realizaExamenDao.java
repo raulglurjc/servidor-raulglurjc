@@ -12,7 +12,7 @@ public class realizaExamenDao {
 
 	// Con este método creamos la conexión con la bbdd.
     public realizaExamenDao() throws URISyntaxException {
-	URI dbUri = null;
+	
         try {
             if(c!=null) return;
 
@@ -20,29 +20,34 @@ public class realizaExamenDao {
             c.setAutoCommit(false);
 
             c.prepareStatement("drop table if exists RealizaExamen").execute();
-		 c.prepareStatement("CREATE TABLE RealizaExamen (idExamen INTEGER NOT NULL,idAlumno varchar(50) NOT NULL,Path varchar(50),FOREIGN KEY(idExamen) REFERENCES Examenes(IdExamen),FOREIGN KEY(idAlumno) REFERENCES Alumnos(idAlumno),PRIMARY KEY(idExamen,idAlumno))").execute();
-            	c.commit();
+            c.prepareStatement("CREATE TABLE RealizaExamen (idExamen INTEGER NOT NULL,idAlumno varchar(50) NOT NULL,Path varchar(50),FOREIGN KEY(idExamen) REFERENCES Examenes(IdExamen),FOREIGN KEY(idAlumno) REFERENCES Alumnos(idAlumno),PRIMARY KEY(idExamen,idAlumno))").execute();
+            c.commit();
+            c.close();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
     }
+    
     
     public List<realizaExamen> all() {
 
         List<realizaExamen> allRealiza = new ArrayList<realizaExamen>();
 
         try {
+        	c = DriverManager.getConnection("jdbc:sqlite:proyecto.db");
+            c.setAutoCommit(false);
             PreparedStatement ps = c.prepareStatement("select * from RealizaExamen");
 
             ResultSet rs = ps.executeQuery();
-
             while(rs.next()) {
                 int idExamen = rs.getInt("idExamen");
                 String idAlumno = rs.getString("idAlumno");
                 String path = rs.getString("Path");
                 allRealiza.add(new realizaExamen(idExamen, idAlumno, path));
             }
-
+            rs.close();
+            ps.close();
+            c.close();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         } finally {
@@ -96,13 +101,16 @@ public class realizaExamenDao {
     	List<String> Paths = new ArrayList<String>();
     	
         try {
+        	c = DriverManager.getConnection("jdbc:sqlite:proyecto.db");
+            c.setAutoCommit(false);
             PreparedStatement ps = c.prepareStatement("select * from RealizaExamen where idExamen = " + idExamen);
             ResultSet rs = ps.executeQuery();
-
             while(rs.next()) {
                 Paths.add(rs.getString("Path"));
             }
-
+            rs.close();
+            ps.close();
+            c.close();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         } finally {
@@ -113,13 +121,16 @@ public class realizaExamenDao {
     // Con este método insertamos el objeto realizaExamen recibido en la tabla de nuestra bbdd RealizaExamenes.
     public void save(realizaExamen realizaExamen) {
         try {
+        	c = DriverManager.getConnection("jdbc:sqlite:proyecto.db");
+            c.setAutoCommit(false);
             PreparedStatement ps = c.prepareStatement("insert into RealizaExamen(idExamen, idAlumno, Path) VALUES(?,?, ?)");
             ps.setInt(1, realizaExamen.getIdExamen());
             ps.setString(2, realizaExamen.getIdAlumno());
             ps.setString(3, realizaExamen.getPath());
             ps.execute();
-
             c.commit();
+            ps.close();
+            c.close();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }

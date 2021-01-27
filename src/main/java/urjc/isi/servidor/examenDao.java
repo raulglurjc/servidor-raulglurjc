@@ -24,10 +24,12 @@ public class examenDao {
             c.prepareStatement("CREATE TABLE Examenes (IdExamen	INTEGER NOT NULL UNIQUE,Fecha	DATE NOT NULL,Asignatura VARCHAR(50) NOT NULL,PRIMARY KEY(IdExamen))").execute();
             
             c.commit();
+            c.close();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
     }
+    
     
     // Con este método vamos a poder obtener todos exámenes de la tabla Exámen.
     public List<examen> all() {
@@ -35,17 +37,20 @@ public class examenDao {
         List<examen> allExamenes = new ArrayList<examen>();
 
         try {
+        	c = DriverManager.getConnection("jdbc:sqlite:proyecto.db");
+            c.setAutoCommit(false);
             PreparedStatement ps = c.prepareStatement("select * from Examenes");
 
             ResultSet rs = ps.executeQuery();
-
             while(rs.next()) {
                 int idExamen = rs.getInt("idExamen");
                 Date Fecha = rs.getDate("Fecha");
                 String Asignatura = rs.getString("Asignatura");
                 allExamenes.add(new examen(idExamen, Fecha, Asignatura));
             }
-
+            rs.close();
+            ps.close();
+            c.close();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         } finally {
@@ -54,26 +59,23 @@ public class examenDao {
     }
     
     
-    public Boolean comprobar_examen(String id) {
-
-        
+    public int comprobar_examen(int idExamen) {
+    	
 
         try {
-            PreparedStatement ps = c.prepareStatement("select * from Examenes WHERE idExamen="+id);
-
-            ResultSet rs = ps.executeQuery();
-
-            while(rs.next()) {
-                int idExamen = rs.getInt("idExamen");
-                if(idExamen!=0)                
-                	return true;                
-            }
+        	c = DriverManager.getConnection("jdbc:sqlite:proyecto.db");
+            c.setAutoCommit(false);
+        	String query = "SELECT * from Examenes WHERE idExamen = " + idExamen;
+            PreparedStatement ps = c.prepareStatement(query);
             
-
+            ps.executeQuery();
+            ps.close();
+            c.close();
         } catch (SQLException e) {
-        	return false;
+            return 0;
+        } finally {
+            return 1;
         }
-		return null; 
     }
     
     
@@ -87,15 +89,18 @@ public class examenDao {
     	Date fecha = null;
 
         try {
+        	c = DriverManager.getConnection("jdbc:sqlite:proyecto.db");
+            c.setAutoCommit(false);
         	String query = "SELECT * from Examenes WHERE idExamen = " + idExamen;
             PreparedStatement ps = c.prepareStatement(query);
             
             ResultSet rs = ps.executeQuery();
-
             while(rs.next()) {
             	fecha = rs.getDate("Fecha");
             }
-
+            rs.close();
+            ps.close();
+            c.close();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         } finally {
@@ -106,6 +111,8 @@ public class examenDao {
     // Con este método insertamos el objeto examen recibido en la tabla de nuestra bbdd Examenes.
     public void save(examen examen) {
         try {
+        	c = DriverManager.getConnection("jdbc:sqlite:proyecto.db");
+            c.setAutoCommit(false);
             PreparedStatement ps = c.prepareStatement("insert into Examenes(idExamen, Fecha , Asignatura) VALUES(?,?,?)");
             ps.setInt(1, examen.getIdExamen());    		
             ps.setDate(2, examen.getFecha());
@@ -114,8 +121,9 @@ public class examenDao {
             System.out.println("sql.Asignatura: "+  examen.getAsignatura());
             System.out.println("sql.Date insert: "+  examen.getFecha());
             ps.execute();
-            ps.close();
             c.commit();
+            ps.close();
+            c.close();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
