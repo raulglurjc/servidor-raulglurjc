@@ -23,7 +23,7 @@ public class examenDao {
             c.prepareStatement("drop table if exists Examenes").execute();
             c.prepareStatement("CREATE TABLE Examenes (IdExamen	INTEGER NOT NULL UNIQUE,Fecha	DATE NOT NULL,Asignatura VARCHAR(50) NOT NULL,PRIMARY KEY(IdExamen))").execute();
             
-            	c.commit();
+            c.commit();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -53,6 +53,36 @@ public class examenDao {
         }
     }
     
+    
+    public Boolean comprobar_examen(String id) {
+
+        
+
+        try {
+            PreparedStatement ps = c.prepareStatement("select * from Examenes WHERE idExamen="+id);
+
+            ResultSet rs = ps.executeQuery();
+
+            while(rs.next()) {
+                int idExamen = rs.getInt("idExamen");
+                if(idExamen!=0)                
+                	return true;                
+            }
+            
+
+        } catch (SQLException e) {
+        	return false;
+        }
+		return null; 
+    }
+    
+    
+    
+    
+    
+    
+    
+    
     public Date getFecha(int idExamen) {
     	Date fecha = null;
 
@@ -77,12 +107,14 @@ public class examenDao {
     public void save(examen examen) {
         try {
             PreparedStatement ps = c.prepareStatement("insert into Examenes(idExamen, Fecha , Asignatura) VALUES(?,?,?)");
-            ps.setInt(1, examen.getIdExamen());
-    		System.out.println("sql.Date insert: "+  examen.getFecha());
+            ps.setInt(1, examen.getIdExamen());    		
             ps.setDate(2, examen.getFecha());
             ps.setString(3, examen.getAsignatura());
+            System.out.println("sql.Examen ID: "+  examen.getIdExamen());
+            System.out.println("sql.Asignatura: "+  examen.getAsignatura());
+            System.out.println("sql.Date insert: "+  examen.getFecha());
             ps.execute();
-
+            ps.close();
             c.commit();
         } catch (SQLException e) {
             throw new RuntimeException(e);

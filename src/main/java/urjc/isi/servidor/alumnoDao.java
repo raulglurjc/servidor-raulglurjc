@@ -22,7 +22,7 @@ public class alumnoDao {
             c.prepareStatement("drop table if exists Alumnos").execute();
             c.prepareStatement("CREATE TABLE Alumnos (idAlumno	VARCHAR(50) NOT NULL UNIQUE,Nombre	VARCHAR(50) NOT NULL,Puerto	INTEGER,IP	VARCHAR(50),PRIMARY KEY(idAlumno))").execute();
 	
-            	c.commit();
+            c.commit();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -89,7 +89,10 @@ public class alumnoDao {
             ps.setInt(3, alumno.getPuerto());
             ps.setString(4, alumno.getIp());
             ps.execute();
-
+            System.out.println("sql.DNI alumno: "+  alumno.getIdAlumno());
+            System.out.println("sql.NOMBRE alumno: "+  alumno.getNombre());
+            System.out.println("sql.IP: "+  alumno.getIp());
+            System.out.println("sql.PUERTO: "+  alumno.getPuerto());
             c.commit();
         } catch (SQLException e) {
             throw new RuntimeException(e);
