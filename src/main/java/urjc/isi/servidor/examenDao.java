@@ -58,23 +58,52 @@ public class examenDao {
         }
     }
     
-    
-    public int comprobar_examen(int idExamen) {
-    	
+    public String getAsignatura(int idExamen) {
+    	String asignatura=null;
+    	try {
+        	c = DriverManager.getConnection("jdbc:sqlite:proyecto.db");
+            c.setAutoCommit(false);
+        	String query = "select * from Examenes Where idExamen=" + idExamen;
+            PreparedStatement ps = c.prepareStatement(query);
+            
+            ResultSet rs = ps.executeQuery();
+            while(rs.next()) {
+            	
+            	asignatura = rs.getString("Asignatura");
+            }
+            rs.close();
+            ps.close();
+            c.close();
 
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        } finally {
+        	return asignatura;
+        }
+    	
+    }
+    public int comprobar_examen(int idExamen) {
+    	int aux=0;
         try {
         	c = DriverManager.getConnection("jdbc:sqlite:proyecto.db");
             c.setAutoCommit(false);
         	String query = "SELECT * from Examenes WHERE idExamen = " + idExamen;
             PreparedStatement ps = c.prepareStatement(query);
             
-            ps.executeQuery();
+            ResultSet rs = ps.executeQuery();
+            while(rs.next()) {
+            	int idex = rs.getInt("idExamen");
+            	if(idex == idExamen)
+            		aux=1;
+            }
+            rs.close();
             ps.close();
             c.close();
+            
         } catch (SQLException e) {
-            return 0;
+            throw new RuntimeException(e);
         } finally {
-            return 1;
+        	return aux;
         }
     }
     

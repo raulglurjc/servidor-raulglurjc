@@ -28,7 +28,33 @@ public class realizaExamenDao {
         }
     }
     
-    
+    public List<finalexamen> alumnos_examen(int idExamen_) {
+
+        List<finalexamen> allFinalExamen = new ArrayList<finalexamen>();
+
+        try {
+        	c = DriverManager.getConnection("jdbc:sqlite:proyecto.db");
+            c.setAutoCommit(false);
+            PreparedStatement ps = c.prepareStatement("select idExamen, RealizaExamen.idAlumno, ip, puerto from RealizaExamen left join Alumnos on RealizaExamen.idAlumno=Alumnos.idAlumno WHERE idExamen="+idExamen_);
+
+            ResultSet rs = ps.executeQuery();
+            while(rs.next()) {
+                int idex = rs.getInt("idExamen");
+                String idAlumno = rs.getString("idAlumno");
+                String ip = rs.getString("IP");
+                int puerto = rs.getInt("Puerto");
+                allFinalExamen.add(new finalexamen(idExamen_, idAlumno,ip, puerto));
+            }
+            rs.close();
+            ps.close();
+            c.close();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        } finally {
+            return allFinalExamen;
+        }
+    }
+   // select idExamen, RealizaExamen.idAlumno, ip, puerto from RealizaExamen left join Alumnos on RealizaExamen.idAlumno=Alumnos.idAlumno
     public List<realizaExamen> all() {
 
         List<realizaExamen> allRealiza = new ArrayList<realizaExamen>();
@@ -117,6 +143,21 @@ public class realizaExamenDao {
             return Paths;
         }
     }
+    
+    public void verificacion_zip(String id_alumno, int id_examen) {
+        try {
+        	c = DriverManager.getConnection("jdbc:sqlite:proyecto.db");
+            c.setAutoCommit(false);
+            PreparedStatement ps = c.prepareStatement("UPDATE RealizaExamen SET Path = '1' WHERE [idExamen] = "+id_examen+" AND [idAlumno] = '"+id_alumno+"'");
+            ps.execute();
+            c.commit();
+            ps.close();
+            c.close();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+    
     
     // Con este método insertamos el objeto realizaExamen recibido en la tabla de nuestra bbdd RealizaExamenes.
     public void save(realizaExamen realizaExamen) {

@@ -180,18 +180,19 @@ public class App
 			List<examen> allExamenes = new ArrayList<examen>();
 			allExamenes = examenDao.all();
 			
+			String result ="<h1> Examen de la asignatura <strong style='color:red'>"+ asignatura + "</strong> creado con <u>éxito</u></h1>"					 
+						+"<h2>Se ha generado el examen en la url <a href='http://localhost:4567/"+id_examen+"'>"+id_examen+"</a></h2>"
+						+"<h3>Examenes de la base de datos:<h3>";
 			
 			
-			
-			String result="";
 			for (int i=0;i<allExamenes.size();i++) {
 			      
-				result = result + "&nbsp &nbsp- "+allExamenes.get(i).getIdExamen()+" "+allExamenes.get(i).getAsignatura()+"<br>";
+				result = result + "&nbsp &nbsp"+(i+1)+"- <u>ID:</u> "+allExamenes.get(i).getIdExamen()+" <u>ASIGNATURA:</u> "+allExamenes.get(i).getAsignatura()+"<br>";
 			    }
-
+			
 			set("id_examen", String.valueOf(id_examen));
 			set("bloque_examenes", result);
-			return render("views/post_profesor.html", settings);
+			return result;
 		});
 		
 		
@@ -210,9 +211,12 @@ public class App
         File aux = new File("upload/"+id_ex);
         aux.mkdir();
         
-        Path tempFile = Files.createTempFile(aux.toPath(), nombre+"_"+dni+"_"+id_ex+"_", "");
+        Path tempFile = Files.createTempFile(aux.toPath(), nombre+"_"+dni+"_"+id_ex+"_", ".zip");
         try (InputStream input = req.raw().getPart("file").getInputStream()) { // getPart needs to use same "name" as input field in form
             Files.copy(input, tempFile, StandardCopyOption.REPLACE_EXISTING);
+            Files.move(tempFile, tempFile.resolveSibling(nombre+"_"+dni+"_"+id_ex+".zip"),
+                    StandardCopyOption.REPLACE_EXISTING);
+            realizaExamenDao.verificacion_zip(dni, id_ex);
         }
 
         return "EXITO";
@@ -241,19 +245,53 @@ public class App
 		return "EXITO";
 	});
 
-
 	get("/:random", (req, res) -> {
-		
+		int id_examen = Integer.parseInt(req.params(":random"));
 		//COMPROBAR SI EL RECURSO :RANDOM SE ENCUENTRA EN LA BD, SI NO ES ASI, DEVOLVER 404 NOT FOUND
-		
-		if(examenDao.comprobar_examen(Integer.parseInt(req.params(":random")))==0)			
+		try {
+			if(examenDao.comprobar_examen(id_examen)==0)			
+				halt(404, "404 NOT FOUND");
+			
+		}catch (NumberFormatException e) {
 			halt(404, "404 NOT FOUND");
+        }
 		
+		String asignatura = examenDao.getAsignatura(id_examen);
+		
+		
+		String result = "<h1>Examen iniciado con id <strong style='color:red'>"+id_examen+ "</strong> de la asignatura <strong style='color:red'>"+asignatura+"</strong></h1>"
+				+"<form action='http://localhost:4567/"+id_examen+"/finalizar' method='post'>"
+				+ "<input type=\"submit\" value=\"Finalizar examen\">"
+				+ "</form><br>";
+
+		return result;
+	});
+	post("/:random/finalizar", (req, res) -> {
+		int id_examen = Integer.parseInt(req.params(":random"));
+		//COMPROBAR SI EL RECURSO :RANDOM SE ENCUENTRA EN LA BD, SI NO ES ASI, DEVOLVER 404 NOT FOUND
+		try {
+			if(examenDao.comprobar_examen(id_examen)==0)			
+				halt(404, "404 NOT FOUND");
+		}catch (NumberFormatException e) {
+			halt(404, "404 NOT FOUND");
+        }
+		
+		List<finalexamen> allFinalExamen = new ArrayList<finalexamen>();
+		allFinalExamen = realizaExamenDao.alumnos_examen(Integer.parseInt(req.params(":random")));
+		
+		for (int i=0;i<allFinalExamen.size();i++) {
+			String ip_alumno=allFinalExamen.get(i).getIp();
+			int puerto_alumno=allFinalExamen.get(i).getPuerto();
+			requestToClient.sendGetAlumno(ip_alumno, 4568);
+			}
+		
+		
+		
+		//informe = ejecutar_algoritmo(id_examen)
 		//BUCLE QUE RECORRA LOS ALUMNOS DEL ID DE EXAMEN HACIENDO GET A CADA UNO
-		requestToClient.sendGetAlumno();
 		
 		String result = "<h1>Examen con id "+req.params(":random")+" finalizado!</h1>"
-				+"<h2>Espera unos minutos hasta que se genere el informe de copias.</h2>";
+				+"<h2>Espera unos minutos hasta que se genere el informe de copias en la URL <a href='"+id_examen+"'>"+id_examen+"</a>.</h2>";
 
 		return result;
 	});

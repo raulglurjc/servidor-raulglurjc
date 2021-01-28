@@ -54,8 +54,9 @@ public class httprequest {
 
     }
     
-    public void sendGetAlumno() throws Exception {
-    	String url = "http://localhost:4568/fin";
+    public void sendGetAlumno(String ip, int puerto) throws Exception {
+    	String url = "http://"+ip+":"+puerto+"/fin";
+    	System.out.println(url);
         HttpGet request = new HttpGet(url);
 
         // add request headers
