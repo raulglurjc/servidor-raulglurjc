@@ -1,1 +1,145 @@
-.
+#index{
+  background-color: white;
+  padding: 25px;
+  border-radius: 10%;
+  border: solid 3px black;
+  box-shadow: 10px 10px darkgrey;
+  text-align: center;
+
+}
+#examenes_bd{
+background-color: white;
+  padding: 20px 15px;
+  text-align: center;
+  border-radius: 10%;
+  border: solid 3px black;
+  box-shadow: 10px 10px darkgrey;
+}
+#titulo{
+border-radius: 10%;
+  border: solid 3px black;
+  box-shadow: 10px 10px darkgrey;
+
+background-color: white;
+  padding: 40px 20px;
+  border-radius: 20px 20px 20px 20px;
+}
+#alumnos_bd{
+border-radius: 10%;
+  border: solid 3px black;
+  box-shadow: 10px 10px darkgrey;
+background-color: white;
+  padding: 40px 20px;
+  border-radius: 20px 20px 20px 20px;
+  text-align:center;
+}
+
+input {
+  text-align: center;
+}
+
+::-webkit-input-placeholder {
+  text-align: center;
+}
+
+:-moz-placeholder {
+  text-align: center;
+}
+
+
+.navbar-brand:hover, .navbar-brand:focus{
+  color: red !important;
+  background-color: transparent !important;
+}
+.nav-item:hover{
+}
+.nav-item{
+  padding-left:30px;
+  padding-right:30px;
+}
+.nav_item2, .nav_item3{
+  font-size: 20px;
+}
+.nav_item2:hover, .nav_item3:hover{
+  color:red;
+  text-decoration: none !important;
+
+}
+#boton_colap{
+  margin-top: 10px;
+}
+#boton_colap .btn::before{
+  font-weight: bold;
+  content: "No mostrar";
+}
+
+
+
+#boton_colap .btn.collapsed::before {
+  font-weight: bold;
+  content: "Mostrar";
+}
+
+
+#boton-alg a{
+  font-weight: bold;
+}
+
+
+body {
+  background-color: #95c2de;
+}
+
+.mainbox {
+  background-color: #95c2de;
+  margin: auto;
+  top: 200px;
+  height: 600px;
+  width: 600px;
+  position: relative;
+}
+
+  .err {
+    color: #ffffff;
+    font-family: 'Nunito Sans', sans-serif;
+    font-size: 11rem;
+    position:absolute;
+    left: 20%;
+    top: 8%;
+  }
+
+.far {
+  position: absolute;
+  font-size: 8.5rem;
+  left: 42%;
+  top: 17%;
+  color: #ffffff;
+}
+
+ .err2 {
+    color: #ffffff;
+    font-family: 'Nunito Sans', sans-serif;
+    font-size: 11rem;
+    position:absolute;
+    left: 68%;
+    top: 8%;
+  }
+
+.msg {
+    text-align: center;
+    font-family: 'Nunito Sans', sans-serif;
+    font-size: 1.6rem;
+    position:absolute;
+    left: 16%;
+    top: 43%;
+    width: 75%;
+  }
+
+a {
+  text-decoration: none;
+  color: white;
+}
+
+a:hover {
+  text-decoration: underline;
+}
