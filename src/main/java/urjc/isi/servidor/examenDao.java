@@ -1,6 +1,5 @@
 package urjc.isi.servidor;
 
-import java.net.URI;
 import java.net.URISyntaxException;
 import java.sql.*;
 import java.util.ArrayList;
@@ -8,37 +7,51 @@ import java.util.List;
 
 
 public class examenDao {
-	
+
 	private static Connection c;
 
+    // Este método abre la conexion con la bbdd
+    public void abrirConexion() throws SQLException {
+
+        c = DriverManager.getConnection("jdbc:sqlite:proyecto.db");
+        c.setAutoCommit(false);
+    }
+
 	// Con este método creamos la conexión con la bbdd.
+    // Creamos la tabla Examenes (Si ya existe, la elimina y la vuelve a crear)
     public examenDao() throws URISyntaxException {
         try {
             if(c!=null) return;
-
-            c = DriverManager.getConnection("jdbc:sqlite:proyecto.db");
-            c.setAutoCommit(false);
-            
+            abrirConexion();
 
             c.prepareStatement("drop table if exists Examenes").execute();
-            c.prepareStatement("CREATE TABLE Examenes (IdExamen	INTEGER NOT NULL UNIQUE,Fecha	DATE NOT NULL,Asignatura VARCHAR(50) NOT NULL,PRIMARY KEY(IdExamen))").execute();
-            
+            c.prepareStatement("CREATE TABLE Examenes (IdExamen	INTEGER NOT NULL UNIQUE, Fecha DATE NOT NULL, Asignatura VARCHAR(50) NOT NULL, finalExamen INTEGER, PRIMARY KEY(IdExamen))").execute();
+
             c.commit();
             c.close();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
     }
-    
-    
+
+    // Este método cierra las conexiones con la bbdd, para que no surjan bloqueos.
+    public void cerrarConexion(PreparedStatement ps, ResultSet rs) throws SQLException {
+
+    	if(rs != null) {
+    		rs.close();
+    	}
+        ps.close();
+        c.close();
+    }
+
     // Con este método vamos a poder obtener todos exámenes de la tabla Exámen.
     public List<examen> all() {
 
         List<examen> allExamenes = new ArrayList<examen>();
 
         try {
-        	c = DriverManager.getConnection("jdbc:sqlite:proyecto.db");
-            c.setAutoCommit(false);
+        	abrirConexion();
+        	// Query sql
             PreparedStatement ps = c.prepareStatement("select * from Examenes");
 
             ResultSet rs = ps.executeQuery();
@@ -46,125 +59,155 @@ public class examenDao {
                 int idExamen = rs.getInt("idExamen");
                 Date Fecha = rs.getDate("Fecha");
                 String Asignatura = rs.getString("Asignatura");
-                allExamenes.add(new examen(idExamen, Fecha, Asignatura));
+				int finalExamen = rs.getInt("finalExamen");
+                allExamenes.add(new examen(idExamen, Fecha, Asignatura, finalExamen));
             }
-            rs.close();
-            ps.close();
-            c.close();
+            cerrarConexion(ps, rs);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         } finally {
             return allExamenes;
         }
     }
-    
+
+    // Método de comprobación para ver si se añade bien la asigantura
     public String getAsignatura(int idExamen) {
     	String asignatura=null;
     	try {
-        	c = DriverManager.getConnection("jdbc:sqlite:proyecto.db");
-            c.setAutoCommit(false);
+    		abrirConexion();
+        	// Query sql
         	String query = "select * from Examenes Where idExamen=" + idExamen;
             PreparedStatement ps = c.prepareStatement(query);
-            
+
             ResultSet rs = ps.executeQuery();
             while(rs.next()) {
-            	
+
             	asignatura = rs.getString("Asignatura");
             }
-            rs.close();
-            ps.close();
-            c.close();
+            cerrarConexion(ps, rs);
 
         } catch (SQLException e) {
             throw new RuntimeException(e);
         } finally {
         	return asignatura;
         }
-    	
+
     }
+
+    // Método que devuelve un 1 si está el examen en la bbdd, y 0 si no está
     public int comprobar_examen(int idExamen) {
     	int aux=0;
         try {
-        	c = DriverManager.getConnection("jdbc:sqlite:proyecto.db");
-            c.setAutoCommit(false);
+        	abrirConexion();
+        	// Query sql
         	String query = "SELECT * from Examenes WHERE idExamen = " + idExamen;
             PreparedStatement ps = c.prepareStatement(query);
-            
+
             ResultSet rs = ps.executeQuery();
             while(rs.next()) {
             	int idex = rs.getInt("idExamen");
             	if(idex == idExamen)
             		aux=1;
             }
-            rs.close();
-            ps.close();
-            c.close();
-            
+            cerrarConexion(ps, rs);
+
         } catch (SQLException e) {
             throw new RuntimeException(e);
         } finally {
         	return aux;
         }
     }
-    
-    
-    
-    
-    
-    
-    
-    
+
+	//Método que cambia el valor para dar el examen por finalizado.
+	public void finalizar_examen(int idExamen) {
+        int valor = 1;
+        
+        try {
+        	abrirConexion();
+        	// Query sql
+        	String query = "select * from Examenes WHERE idExamen=" + idExamen;
+            PreparedStatement ps = c.prepareStatement(query);
+            ResultSet rs = ps.executeQuery();
+            Date fecha = rs.getDate("Fecha");
+            String asig = rs.getString("Asignatura");
+            
+			query = "UPDATE Examenes SET idExamen=?, Fecha=?, Asignatura=?, finalExamen=? WHERE idExamen=" + idExamen;
+			ps = c.prepareStatement(query);
+            ps.setInt(1, idExamen);
+            ps.setDate(2, fecha);
+            ps.setString(3, asig);
+			ps.setInt(4, valor);
+			int retorno = ps.executeUpdate();
+            c.commit();
+            cerrarConexion(ps, rs);
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+	//Método que devuelve el campo finalExamen
+	public int comprobar_final(int idExamen){
+		int esfin = 0;
+    	try {
+    		abrirConexion();
+        	// Query sql
+        	String query = "select * from Examenes WHERE idExamen=" + idExamen;
+            PreparedStatement ps = c.prepareStatement(query);
+            ResultSet rs = ps.executeQuery();
+            
+            esfin = rs.getInt("finalExamen");
+            cerrarConexion(ps, rs);
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        } finally {
+        	return esfin;
+        }
+	}
+
+    // Metodo de comprobación de la insercción de la fecha
     public Date getFecha(int idExamen) {
     	Date fecha = null;
 
         try {
-        	c = DriverManager.getConnection("jdbc:sqlite:proyecto.db");
-            c.setAutoCommit(false);
+        	abrirConexion();
+        	// Query sql
         	String query = "SELECT * from Examenes WHERE idExamen = " + idExamen;
             PreparedStatement ps = c.prepareStatement(query);
-            
+
             ResultSet rs = ps.executeQuery();
             while(rs.next()) {
             	fecha = rs.getDate("Fecha");
             }
-            rs.close();
-            ps.close();
-            c.close();
+            cerrarConexion(ps, rs);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         } finally {
             return fecha;
         }
     }
-    
+
     // Con este método insertamos el objeto examen recibido en la tabla de nuestra bbdd Examenes.
     public void save(examen examen) {
         try {
-        	c = DriverManager.getConnection("jdbc:sqlite:proyecto.db");
-            c.setAutoCommit(false);
-            PreparedStatement ps = c.prepareStatement("insert into Examenes(idExamen, Fecha , Asignatura) VALUES(?,?,?)");
-            ps.setInt(1, examen.getIdExamen());    		
+        	abrirConexion();
+        	// Query sql
+            PreparedStatement ps = c.prepareStatement("insert into Examenes(idExamen, Fecha , Asignatura, finalExamen) VALUES(?,?,?,?)");
+            ps.setInt(1, examen.getIdExamen());
             ps.setDate(2, examen.getFecha());
             ps.setString(3, examen.getAsignatura());
+			ps.setInt(4, examen.getFinalExamen());
             System.out.println("sql.Examen ID: "+  examen.getIdExamen());
             System.out.println("sql.Asignatura: "+  examen.getAsignatura());
             System.out.println("sql.Date insert: "+  examen.getFecha());
+			System.out.println("sql.finalExamen insert: "+  examen.getFinalExamen());
             ps.execute();
             c.commit();
-            ps.close();
-            c.close();
+            cerrarConexion(ps, null);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-        
-    }
 
-    // Cerramos la conexión con la bbdd
-    public void close() {
-        try {
-            c.close();
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
     }
 }
