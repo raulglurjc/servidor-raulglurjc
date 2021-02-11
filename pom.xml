@@ -92,7 +92,7 @@
         <version>0.4.4</version>
         <configuration>
           <jdkVersion>1.8</jdkVersion>
-          <appName>servidor-hectorfr95</appName>
+          <appName>servidor-raulglurjc-travis</appName>
           <processTypes>
             <!-- Tell Heroku how to launch your application -->
             <web>java -cp ./target/servidor-1.0-jar-with-dependencies.jar urjc.isi.servidor.App</web>
