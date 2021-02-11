@@ -453,7 +453,8 @@ public class App
 				exec.Ejecutar(aux, id_examen);	
 			}
 			
-			
+			Date fecha = examenDao.getFecha(id_examen);
+			System.out.println(fecha);
 			String link =   "/"+id_examen+"/informe.txt";
 			String content = render("upload/"+id_examen+"/output.txt", settings);
 			set("content", content);

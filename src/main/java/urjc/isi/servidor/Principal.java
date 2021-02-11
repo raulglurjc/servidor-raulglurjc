@@ -82,7 +82,7 @@ public class Principal /*extends Repository */{
 			
 			arr_res = res.toArray(new String[0]);
             } else {
-                System.err.println("¡Path NO válido!");
+                System.err.println("¡Path NO valido!");
 			}
 			
             return arr_res;
@@ -203,7 +203,7 @@ public class Principal /*extends Repository */{
 				}
 			}
 			if(contador1==contador2){
-				System.out.println("Los ficheros son iguales");
+				System.out.println("El numero total de lineas son iguales");
 			}
 			
 			qlee1.close();
@@ -268,8 +268,8 @@ public class Principal /*extends Repository */{
 	}
 
 	//Metodo Principal
-	public void Ejecutar(String path, int id_examen) throws Exception{
-    	System.setOut(new PrintStream(new FileOutputStream("upload/"+id_examen+"/output.txt")));
+	public static void Ejecutar(String path, int Id) throws Exception{
+    	System.setOut(new PrintStream(new FileOutputStream("upload/" + Id + "/output.txt")));
 		String DIRECTORIO = path.concat("/gits");
  
     	String [] list_fich = null;
@@ -333,8 +333,7 @@ public class Principal /*extends Repository */{
 	
 	}
 	
-	//Metodo para probar en local
-	/*
+	/*Metodo para probar en local
     public static void main(String[] args) throws Exception{
     	Ejecutar(PATH_LOCAL);
     }*/
