@@ -176,7 +176,9 @@ public class App
 		alumnoDao alumnoDao = new alumnoDao();
 
 		
-		
+		get("/pruebas", (req, res) -> {
+			return render("views/pruebas.html", settings); // Retornamos el contenido del archivo css
+		});
 		
 		//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		redirect.get("/", "/profesor"); //Redireccion del recurso '/' a '/profesor'
