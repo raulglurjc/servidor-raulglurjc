@@ -176,15 +176,16 @@ public class App
 		alumnoDao alumnoDao = new alumnoDao();
 
 		
-		get("/pruebas", (req, res) -> {
-			return render("views/pruebas.html", settings); // Retornamos el contenido del archivo css
-		});
+		
 		
 		//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		redirect.get("/", "/profesor"); //Redireccion del recurso '/' a '/profesor'
 		//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////		
 		get("/views/css/style.css", (req, res) -> {
 			return render("views/css/style.css", settings); // Retornamos el contenido del archivo css
+		});
+		get("/views/css/style1.css", (req, res) -> {
+			return render("views/css/style1.css", settings); // Retornamos el contenido del archivo css
 		});
 		//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////		
 		get("/favicon.png", (req, res) -> { //Recurso favicon
@@ -201,6 +202,11 @@ public class App
 			out.flush();
 			out.close();
 			return out;
+		});
+		
+		get("/pruebas", (req, res) -> {
+			res.raw().setContentType("text/html; charset=utf-8");
+			return render("views/prueba.html", settings);
 		});
 		//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		get("/profesor", (req, res) -> { // Pagina principal 
